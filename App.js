@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Select } from "./Select";
 
 let options = "0"
-  .repeat(100)
+  .repeat(150)
   .split("")
   .map((_, idx) => idx);
 

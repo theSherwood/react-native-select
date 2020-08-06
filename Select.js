@@ -8,18 +8,26 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
 
 const CustomScrollView = wrapScrollView(ScrollView);
+const dark = "#666";
 
 const styles = StyleSheet.create({
   field: {
-    width: 50,
-    borderColor: "#666",
+    width: 100,
+    borderColor: dark,
     borderStyle: "solid",
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 3,
     padding: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  fieldText: {
+    color: dark,
+    fontWeight: "bold",
   },
   modalView: {
     width: "100%",
@@ -39,7 +47,7 @@ const styles = StyleSheet.create({
   menu: {
     padding: 15,
     backgroundColor: "white",
-    borderTopColor: "#666",
+    borderTopColor: dark,
     borderTopWidth: 1,
     flexBasis: 120,
     flexDirection: "row",
@@ -62,17 +70,18 @@ const styles = StyleSheet.create({
   },
   optionText: {
     textAlign: "center",
+    color: dark,
   },
   selectedOption: {
-    backgroundColor: "#666",
-    borderRadius: 5,
+    borderColor: dark,
+    borderWidth: 1,
+    borderRadius: 5000,
   },
   selectedOptionText: {
-    color: "#eee",
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: "#666",
+    backgroundColor: dark,
     padding: 15,
     borderRadius: 5,
     flexGrow: 0,
@@ -99,8 +108,12 @@ export const Select = ({
   placeholder = "--",
   closeDelayOnSelect,
   initialScrollToIndex,
-  menu: Menu,
+  menu,
+  icon,
+  iconSize,
+  iconColor,
   fieldStyles = {},
+  fieldTextStyles = {},
   modalViewStyles = {},
   menuStyles = {},
   listStyles = {},
@@ -141,7 +154,18 @@ export const Select = ({
         style={{ ...styles.field, ...fieldStyles }}
         onPress={open}
       >
-        <Text>{options[selected] || placeholder}</Text>
+        <Text style={{ ...styles.fieldText, ...fieldTextStyles }}>
+          {options[selected] || placeholder}
+        </Text>
+        {icon ? (
+          icon()
+        ) : (
+          <AntDesign
+            name="caretdown"
+            size={iconSize || 16}
+            color={iconColor || dark}
+          />
+        )}
       </TouchableOpacity>
       <Modal animationType="slide" visible={isOpen}>
         <StatusBar hidden={true} />
@@ -195,8 +219,8 @@ export const Select = ({
               </View>
             </CustomScrollView>
           </View>
-          {Menu ? (
-            <Menu />
+          {menu ? (
+            menu()
           ) : (
             <View style={{ ...styles.menu, ...menuStyles }}>
               <TouchableOpacity
